@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lakheslo | AI Study Assistant</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+
+<body>
+    <div class="app-shell">
+
+        <!-- SIDEBAR -->
+        <aside class="sidebar">
+
+            <div class="brand">
+                <div class="brand-icon">L</div>
+                <div>
+                    <h2>Lakheslo</h2>
+                    <span>AI Study Assistant</span>
+                </div>
+            </div>
+
+            <div class="sidebar-label">WORKSPACE</div>
+
+            <button class="nav-item active" data-section="summarize">
+                <span class="nav-icon">📄</span>
+                <span>Summarize PDF</span>
+            </button>
+
+            <button class="nav-item" data-section="quiz">
+                <span class="nav-icon">✏️</span>
+                <span>Generate Quiz</span>
+            </button>
+
+            <button class="nav-item" data-section="chat">
+                <span class="nav-icon">💬</span>
+                <span>Chat with Document</span>
+            </button>
+
+            <div class="sidebar-bottom">
+                <div class="profile">
+                    <div class="avatar">E</div>
+                    <div>
+                        <strong>Elias Bcheraui</strong>
+                        <span>Master AI · USJ ESIB</span>
+                    </div>
+                </div>
+            </div>
+
+        </aside>
+
+
+        <!-- MAIN CONTENT -->
+        <main class="main-content">
+
+            <!-- TOPBAR -->
+            <header class="topbar">
+
+                <div class="breadcrumb">
+                    Workspace /
+                    <strong id="breadcrumb-current">Summarize PDF</strong>
+                </div>
+
+                <div class="status">
+                    <span class="status-dot"></span>
+                    AI Assistant
+                </div>
+
+            </header>
+
+
+            <!-- WELCOME BANNER -->
+            <section class="welcome">
+
+                <div>
+                    <span class="eyebrow">
+                        YOUR PERSONAL AI STUDY PARTNER
+                    </span>
+
+                    <h1>
+                        Study smarter.<br>
+                        <span>Understand faster.</span>
+                    </h1>
+
+                    <p>
+                        Upload your documents and let AI help you learn,
+                        revise, and understand complex information.
+                    </p>
+                </div>
+
+                <div class="welcome-art">✦</div>
+
+            </section>
+
+
+            <!-- WORKSPACE -->
+            <section class="workspace">
+
+                <div class="section-heading">
+
+                    <div>
+                        <span class="eyebrow">GET STARTED</span>
+
+                        <h2 id="section-title">
+                            Summarize your document
+                        </h2>
+
+                        <p id="section-description">
+                            Turn lengthy PDF documents into clear,
+                            structured summaries.
+                        </p>
+                    </div>
+
+                </div>
+
+
+                <!-- PDF UPLOAD -->
+                <div class="upload-card">
+
+                    <div class="upload-icon">↑</div>
+
+                    <h3>Upload your PDF document</h3>
+
+                    <p>
+                        Select a PDF from your computer to get started.
+                    </p>
+
+                    <label class="upload-button" for="pdf-file">
+                        Choose PDF file
+                    </label>
+
+                    <input
+                        type="file"
+                        id="pdf-file"
+                        accept=".pdf,application/pdf"
+                        hidden
+                    >
+
+                    <p class="file-info" id="file-info">
+                        PDF files only · Maximum size: 20 MB
+                    </p>
+
+                </div>
+
+
+                <!-- CHAT WORKSPACE -->
+                <div id="chat-screen" class="chat-screen hidden">
+                    <div class="chat-toolbar">
+                        <div>
+                            <span class="eyebrow">DOCUMENT CHAT</span>
+                            <h3>Ask anything about your document</h3>
+                        </div>
+                        <label class="chat-attach-button" for="chat-file">
+                            <span>＋</span> Attach PDF
+                        </label>
+                        <input
+                            type="file"
+                            id="chat-file"
+                            accept=".pdf,application/pdf"
+                            hidden
+                        >
+                    </div>
+
+                    <div id="chat-file-chip" class="chat-file-chip hidden">
+                        <span class="file-chip-icon">PDF</span>
+                        <span id="chat-file-name"></span>
+                        <button id="remove-chat-file" type="button" aria-label="Remove attached PDF">×</button>
+                    </div>
+
+                    <div id="chat-messages" class="chat-messages">
+                        <div id="chat-empty-state" class="chat-empty-state">
+                            <div class="chat-empty-icon">✦</div>
+                            <h3>Your document assistant is ready</h3>
+                            <p>Attach a PDF, then ask a question to start your conversation.</p>
+                        </div>
+                    </div>
+
+                    <div class="chat-composer">
+                        <label class="composer-attach" for="chat-file" aria-label="Attach a PDF">＋</label>
+                        <textarea
+                            id="chat-question"
+                            placeholder="Ask a question about your document..."
+                            rows="1"
+                            maxlength="2000"
+                        ></textarea>
+                        <button id="chat-send-button" class="chat-send-button" type="button" disabled aria-label="Send question">↑</button>
+                    </div>
+                    <p class="chat-hint">Lakheslo answers using your attached PDF · Enter to send, Shift + Enter for a new line</p>
+                </div>
+
+
+                <!-- ACTION BUTTON -->
+                <div class="action-area">
+
+                    <button
+                        id="process-button"
+                        class="primary-button"
+                        disabled
+                    >
+
+                        <span id="process-button-text">
+                            Generate Summary
+                        </span>
+
+                        <span>→</span>
+
+                    </button>
+
+                    <p id="message" class="message"></p>
+
+                </div>
+
+
+                <!-- RESULT -->
+                <div id="result-card" class="result-card hidden">
+
+                    <div class="result-header">
+
+                        <div>
+                            <span class="eyebrow">
+                                AI GENERATED RESULT
+                            </span>
+
+                            <h3 id="result-title">
+                                Your result
+                            </h3>
+                        </div>
+
+                        <button
+                            id="copy-button"
+                            class="secondary-button"
+                        >
+                            Copy result
+                        </button>
+
+                    </div>
+
+                    <div
+                        id="result-content"
+                        class="result-content"
+                    ></div>
+
+                </div>
+
+            </section>
+
+
+            <!-- FOOTER -->
+            <footer>
+
+                <span>LAKHESLO © 2026</span>
+
+                <span>
+                    Built for smarter learning · Master AI – USJ ESIB
+                </span>
+
+            </footer>
+
+        </main>
+
+    </div>
+
+
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+
+</body>
+</html>
