@@ -129,6 +129,15 @@ def process_document():
     except Exception as error:
         app.logger.exception("Document processing failed in %s mode.", mode)
 
+        if "429" in str(error) or "RESOURCE_EXHAUSTED" in str(error):
+            return jsonify({
+                "error": (
+                    "Gemini's daily free-tier limit has been reached. "
+                    "Please try again after the quota resets, or enable billing "
+                    "or use a project with available Gemini quota."
+                )
+            }), 429
+
         return jsonify({
             "error": (
                 f"Lakheslo could not generate the {mode} result. "
